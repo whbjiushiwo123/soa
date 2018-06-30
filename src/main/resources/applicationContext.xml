@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:whb="http://www.cnblogs.com/eric-lin/schema/user"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.cnblogs.com/eric-lin/schema/user
+       http://www.cnblogs.com/eric-lin/schema/user/user.xsd">
+
+    <!--<bean id="userService" class="com.whb.spring.UserServiceImpl" ></bean>-->
+    <whb:service  interface="com.whb.spring.UserService" ref="userService" protocol="dubbo" host="" port=""/>
+    <whb:registry  protocol="redis" address="192.168.0.1:6379"/>
+    <whb:reference id="testServiceImpl" protocol="http" intf="com.whb.spring.UserService" loadBalance="random" />
+    <whb:protocol name="http" host="127.0.0.1" port="27017" />
+
+</beans>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<xsd:schema xmlns="http://www.cnblogs.com/eric-lin/schema/user"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            xmlns:tool="http://www.springframework.org/schema/tool"
+            targetNamespace="http://www.cnblogs.com/eric-lin/schema/user"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+    <xsd:import namespace="http://www.springframework.org/schema/beans" />
+    <xsd:import namespace="http://www.springframework.org/schema/tool" />
+
+    <xsd:element name="registry">
+        <xsd:complexType>
+            <xsd:attribute name="protocol" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="address" type="xsd:string"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="protocol">
+        <xsd:complexType>
+            <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="host" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="port" type="xsd:string"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="service">
+        <xsd:complexType>
+            <xsd:attribute name="interface" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="protocol" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="host" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="port" type="xsd:string"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="reference">
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="intf" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="protocol" type="xsd:string"></xsd:attribute>
+            <xsd:attribute name="loadBalance" type="xsd:string"></xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
