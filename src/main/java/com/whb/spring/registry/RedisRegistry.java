@@ -44,10 +44,43 @@ public class RedisRegistry implements BaseRegistry {
 
     }
 
+    /**
+     * json数据结果
+     * "testServiceImpl":{
+     *     {
+     *         "host:port":{
+     *             protocol:{},
+     *             service:{}
+     *         }
+     *     },
+     *     {
+     *         "host:port":{
+     *             protocol:{},
+     *             service:{}
+     *         }
+     *     },
+     *     {
+     *         "host:port":{
+     *             protocol:{},
+     *             service:{}
+     *         }
+     *     }
+     * }
+     * @param ipport 多个服务信息
+     * @param key 地址加端口
+     */
     private void lpush(JSONObject ipport, String key) {
         if(RedisApi.exists(key)){
             Set<String> keys = ipport.keySet();
             String iportStr = "";
+            //循坏取出host:port里面中的内容
+            // {
+            //    "host:port":{
+            //        protocol:{},
+            //        service:{}
+            //   }
+            // }
+
             for(String kk:keys){
                 iportStr = kk;
             }
@@ -69,6 +102,7 @@ public class RedisRegistry implements BaseRegistry {
             if(isold){
                 //老机器去重
                 if(newRegistry.size()>0){
+                    //删除老机器
                     RedisApi.del(key);
                     String[] newRestr = new String[newRegistry.size()];
                     for(int i=0;i<newRegistry.size();i++){
@@ -87,13 +121,18 @@ public class RedisRegistry implements BaseRegistry {
     }
 
     public List<String> getRegistry(String id,ApplicationContext applicationContext){
-        Registry registry = applicationContext.getBean(Registry.class);
-        RedisApi.createJedisPool(registry.getAddress());
-        if(RedisApi.exists(id)){
-            //key对应的list
-            return RedisApi.lrange(id);
-        }
+       try {
+           Registry registry = applicationContext.getBean(Registry.class);
+           RedisApi.createJedisPool(registry.getAddress());
+           if(RedisApi.exists(id)){
+               //拿key对应的list
+               return RedisApi.lrange(id);
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
         return null;
+
     }
 
 }

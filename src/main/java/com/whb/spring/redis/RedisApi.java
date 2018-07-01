@@ -13,14 +13,15 @@ import java.util.Properties;
 public class RedisApi {
     
     private static JedisPool pool;
-    
+
     private static Properties prop = null;
-    
+
     private static JedisPoolConfig config = null;
-    
+
+
     static {
         InputStream in = RedisApi.class.getClassLoader()
-                .getResourceAsStream("com/dongnao/jack/redis/redis.properties");
+                .getResourceAsStream("redis.properties");
         
         prop = new Properties();
         try {
@@ -46,12 +47,13 @@ public class RedisApi {
         config.setTestOnReturn(Boolean.valueOf(prop.getProperty("TEST_ON_RETURN")));
         //瀹氭椂�?圭嚎绋嬫睜涓┖闂茬殑閾炬帴杩涜validateObject鏍￠�?
         config.setTestWhileIdle(Boolean.valueOf(prop.getProperty("TEST_WHILE_IDLE")));
-        
+
+
     }
     
     public static void createJedisPool(String address) {
         pool = new JedisPool(config, address.split(":")[0],
-                Integer.valueOf(address.split(":")[1]), 100000);
+                Integer.valueOf(address.split(":")[1]), 100000,prop.getProperty("PASSWORD"));
     }
     
     /**

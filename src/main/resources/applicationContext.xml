@@ -6,11 +6,23 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.cnblogs.com/eric-lin/schema/user
        http://www.cnblogs.com/eric-lin/schema/user/user.xsd">
-
+    <bean id="prop" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <!-- 这里是PropertiesFactoryBean类，它也有个locations属性，也是接收一个数组，跟上面一样 -->
+        <property name="locations">
+            <array>
+                <value>classpath:redis.properties</value>
+            </array>
+        </property>
+    </bean>
     <!--<bean id="userService" class="com.whb.spring.UserServiceImpl" ></bean>-->
-    <whb:service  interface="com.whb.spring.UserService" ref="userService" protocol="dubbo" host="" port=""/>
-    <whb:registry  protocol="redis" address="192.168.0.1:6379"/>
-    <whb:reference id="testServiceImpl" protocol="http" intf="com.whb.spring.UserService" loadBalance="random" />
+    <whb:registry  protocol="redis" address="47.75.6.237:6379"/>
+    <whb:reference id="userService" protocol="http" intf="com.whb.spring.UserService" loadBalance="random" />
     <whb:protocol name="http" host="127.0.0.1" port="27017" />
+
+    <whb:service  interface="com.whb.spring.UserService" ref="userService" protocol="rmi"/>
+    <whb:service  interface="com.whb.spring.UserService" ref="userService" protocol="netty"/>
+    <whb:service  interface="com.whb.spring.UserService" ref="userService" protocol="http"/>
+    <whb:service  interface="com.whb.spring.UserService" ref="userService" protocol="http"/>
+
 
 </beans>

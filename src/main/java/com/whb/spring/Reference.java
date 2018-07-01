@@ -1,23 +1,28 @@
 package com.whb.spring;
 
+import com.whb.spring.configBean.BaseConfigBean;
 import com.whb.spring.proxy.HttpInvoke;
 import com.whb.spring.proxy.Invoke;
 import com.whb.spring.proxy.advice.InvokeInvocationHandler;
+import com.whb.spring.registry.BaseRegistryDelegate;
 import lombok.Data;
 import lombok.extern.java.Log;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.io.Serializable;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
 @Log
-public class Reference  implements Serializable  ,FactoryBean ,ApplicationContextAware{
+public class Reference  extends BaseConfigBean
+        implements InitializingBean,FactoryBean ,ApplicationContextAware{
     private String id;
     private String intf;
     private String protocol;
@@ -30,6 +35,7 @@ public class Reference  implements Serializable  ,FactoryBean ,ApplicationContex
         invokes.put("rmi",null);
         invokes.put("netty",null);
     }
+    private List<String> registryInfo = new ArrayList<>();
     public Reference(){
         log.info("Reference is called !");
     }
@@ -81,5 +87,10 @@ public class Reference  implements Serializable  ,FactoryBean ,ApplicationContex
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        registryInfo = BaseRegistryDelegate.getRegistry(id,applicationContext);
     }
 }
